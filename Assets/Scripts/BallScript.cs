@@ -6,18 +6,23 @@ public class BallScript : MonoBehaviour {
     private Vector3 ballPosition;
     private Vector2 ballInitialForce;
     public GameObject playerObject;
+   
 	// Use this for initialization
 	void Start () {
-        ballInitialForce = new Vector2(100, 5500); //create pushing force
+        ballInitialForce = new Vector2(800, 6500); //create pushing force
         ballIsActive = false; //set ball to inactive 
         ballPosition = transform.position; //ball position
+        
 	}
-	
+
+    
+    
 	// Update is called once per frame
 	void Update () {
 	   if (Input.GetButtonDown ("Jump") == true) {
            if (!ballIsActive)
            {
+               
                GetComponent<Rigidbody2D>().isKinematic = false;
                GetComponent<Rigidbody2D>().AddForce(ballInitialForce);
                ballIsActive = !ballIsActive;
@@ -28,6 +33,8 @@ public class BallScript : MonoBehaviour {
            ballPosition.x = playerObject.transform.position.x;
            transform.position = ballPosition;
        }
+
+        //Check if ball falls to dath zone
        if (ballIsActive && transform.position.y < -113)
        {
            ballIsActive = !ballIsActive;
@@ -35,6 +42,8 @@ public class BallScript : MonoBehaviour {
            ballPosition.y = -91.9f;
            transform.position = ballPosition;
            GetComponent<Rigidbody2D>().isKinematic = true;
+
+           playerObject.SendMessage("TakeLife");
        }
        
        
